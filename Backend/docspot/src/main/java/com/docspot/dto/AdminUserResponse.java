@@ -2,9 +2,10 @@ package com.docspot.dto;
 
 import com.docspot.entity.AccountStatus;
 import com.docspot.entity.Role;
+
 import java.time.LocalDateTime;
 
-public class UserResponse {
+public class AdminUserResponse {
 
     private Long id;
     private String name;
@@ -13,10 +14,7 @@ public class UserResponse {
     private AccountStatus accountStatus;
     private LocalDateTime createdAt;
 
-    public UserResponse() {
-    }
-
-    public UserResponse(
+    public AdminUserResponse(
             Long id,
             String name,
             String email,

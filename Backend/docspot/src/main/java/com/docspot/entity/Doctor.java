@@ -30,8 +30,9 @@ public class Doctor {
 
     private String clinicAddress;
 
-    private String about;
-
+    @Column(columnDefinition = "TEXT")
+private String about;
+ 
     public Doctor() {
     }
 

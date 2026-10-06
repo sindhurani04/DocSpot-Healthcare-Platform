@@ -33,12 +33,13 @@ public class AuthController {
         );
 
         UserResponse response = new UserResponse(
-                user.getId(),
-                user.getName(),
-                user.getEmail(),
-                user.getRole(),
-                user.getCreatedAt()
-        );
+        user.getId(),
+        user.getName(),
+        user.getEmail(),
+        user.getRole(),
+        user.getAccountStatus(),
+        user.getCreatedAt()
+);
 
         return ResponseEntity
                 .status(HttpStatus.CREATED)
@@ -76,12 +77,13 @@ public ResponseEntity<UserResponse> registerDoctor(
     );
 
     UserResponse response = new UserResponse(
-            user.getId(),
-            user.getName(),
-            user.getEmail(),
-            user.getRole(),
-            user.getCreatedAt()
-    );
+        user.getId(),
+        user.getName(),
+        user.getEmail(),
+        user.getRole(),
+        user.getAccountStatus(),
+        user.getCreatedAt()
+);
 
     return ResponseEntity
             .status(HttpStatus.CREATED)
@@ -97,12 +99,13 @@ public ResponseEntity<UserResponse> registerDoctor(
         User user = authService.getUserByEmail(email);
 
         UserResponse response = new UserResponse(
-                user.getId(),
-                user.getName(),
-                user.getEmail(),
-                user.getRole(),
-                user.getCreatedAt()
-        );
+        user.getId(),
+        user.getName(),
+        user.getEmail(),
+        user.getRole(),
+        user.getAccountStatus(),
+        user.getCreatedAt()
+);
 
         return ResponseEntity.ok(response);
     }

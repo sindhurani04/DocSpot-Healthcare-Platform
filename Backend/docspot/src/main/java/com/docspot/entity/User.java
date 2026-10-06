@@ -24,6 +24,15 @@ public class User {
     @Column(nullable = false)
     private Role role;
 
+@Enumerated(EnumType.STRING)
+@Column(nullable = false)
+private AccountStatus accountStatus;
+
+
+
+
+
+
     @Column(nullable = false)
     private LocalDateTime createdAt;
 
@@ -31,13 +40,13 @@ public class User {
     }
 
     public User(String name, String email, String password, Role role) {
-        this.name = name;
-        this.email = email;
-        this.password = password;
-        this.role = role;
-        this.createdAt = LocalDateTime.now();
-    }
-
+    this.name = name;
+    this.email = email;
+    this.password = password;
+    this.role = role;
+    this.accountStatus = AccountStatus.ACTIVE;
+    this.createdAt = LocalDateTime.now();
+}
     public Long getId() {
         return id;
     }
@@ -85,4 +94,12 @@ public class User {
     public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
     }
+
+    public AccountStatus getAccountStatus() {
+    return accountStatus;
+}
+
+public void setAccountStatus(AccountStatus accountStatus) {
+    this.accountStatus = accountStatus;
+}
 }

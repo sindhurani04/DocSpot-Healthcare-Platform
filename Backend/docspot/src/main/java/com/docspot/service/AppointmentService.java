@@ -2,6 +2,9 @@ package com.docspot.service;
 
 import com.docspot.entity.Appointment;
 import com.docspot.entity.AppointmentStatus;
+
+import com.docspot.entity.AccountStatus;
+
 import com.docspot.entity.Doctor;
 import com.docspot.entity.DoctorWeeklySchedule;
 import com.docspot.entity.User;
@@ -15,6 +18,23 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
 
+
+// private String formatDoctorName(String name) {
+//     if (name == null || name.trim().isEmpty()) {
+//         return "";
+//     }
+
+//     String trimmedName = name.trim();
+
+//     if (trimmedName.matches("(?i)^Dr\\.\\s+.*")) {
+//         return trimmedName;
+//     }
+
+//     return "Dr. " + trimmedName;
+// }
+
+
+
 @Service
 public class AppointmentService {
 
@@ -23,6 +43,20 @@ public class AppointmentService {
     private final DoctorRepository doctorRepository;
     private final DoctorWeeklyScheduleService weeklyScheduleService;
     private final NotificationService notificationService;
+
+    private String formatDoctorName(String name) {
+    if (name == null || name.trim().isEmpty()) {
+        return "";
+    }
+
+    String trimmedName = name.trim();
+
+    if (trimmedName.matches("(?i)^Dr\\.\\s+.*")) {
+        return trimmedName;
+    }
+
+    return "Dr. " + trimmedName;
+}
 
     public AppointmentService(
             AppointmentRepository appointmentRepository,
@@ -56,6 +90,30 @@ public class AppointmentService {
         Doctor doctor = doctorRepository.findById(doctorId)
                 .orElseThrow(() ->
                         new RuntimeException("Doctor not found"));
+
+
+        // Only ACTIVE doctors can receive appointments
+        if (doctor.getUser().getAccountStatus() != AccountStatus.ACTIVE) {
+                throw new RuntimeException(
+                                "Appointments can only be booked with active doctors");
+        }
+
+        
+
+// Prevent booking a past appointment time
+LocalDate today = LocalDate.now();
+LocalTime now = LocalTime.now();
+
+if (appointmentDate.isBefore(today) ||
+        (appointmentDate.isEqual(today) &&
+         !appointmentTime.isAfter(now))) {
+
+    throw new RuntimeException(
+            "Appointment time has already passed. Please select a future slot."
+    );
+}
+
+
 
         // =====================================================
         // CHECK DOCTOR WEEKLY SCHEDULE
@@ -220,11 +278,29 @@ public List<LocalTime> getBookedSlots(
     public Appointment updateAppointmentStatus(
             Long appointmentId,
             AppointmentStatus status) {
+Appointment appointment =
+        getAppointmentById(appointmentId);
 
-        Appointment appointment =
-                getAppointmentById(appointmentId);
+// Prevent completing an appointment before its scheduled date/time
+if (status == AppointmentStatus.COMPLETED) {
 
-        appointment.setStatus(status);
+    LocalDate today = LocalDate.now();
+    LocalTime now = LocalTime.now();
+
+    LocalDate appointmentDate = appointment.getAppointmentDate();
+    LocalTime appointmentTime = appointment.getAppointmentTime();
+
+    if (appointmentDate.isAfter(today) ||
+            (appointmentDate.isEqual(today) &&
+             appointmentTime.isAfter(now))) {
+
+        throw new RuntimeException(
+                "Appointment cannot be completed before its scheduled date and time"
+        );
+    }
+}
+
+appointment.setStatus(status);
 
         Appointment savedAppointment =
                 appointmentRepository.save(appointment);
@@ -237,8 +313,8 @@ public List<LocalTime> getBookedSlots(
 
             notificationService.createNotification(
                     appointment.getPatient().getId(),
-                    appointment.getDoctor().getUser().getName()
-                            + " has confirmed your appointment on "
+                   formatDoctorName(appointment.getDoctor().getUser().getName())
+        + " has confirmed your appointment on "
                             + appointment.getAppointmentDate()
                             + " at "
                             + appointment.getAppointmentTime(),
@@ -254,8 +330,8 @@ public List<LocalTime> getBookedSlots(
 
             notificationService.createNotification(
                     appointment.getPatient().getId(),
-                    appointment.getDoctor().getUser().getName()
-                            + " has cancelled your appointment on "
+                    formatDoctorName(appointment.getDoctor().getUser().getName())
+        + " has cancelled your appointment on "
                             + appointment.getAppointmentDate()
                             + " at "
                             + appointment.getAppointmentTime(),
@@ -271,8 +347,8 @@ public List<LocalTime> getBookedSlots(
 
             notificationService.createNotification(
                     appointment.getPatient().getId(),
-                    appointment.getDoctor().getUser().getName()
-                            + " has completed your appointment on "
+                    formatDoctorName(appointment.getDoctor().getUser().getName())
+        + " has completed your appointment on "
                             + appointment.getAppointmentDate()
                             + " at "
                             + appointment.getAppointmentTime(),

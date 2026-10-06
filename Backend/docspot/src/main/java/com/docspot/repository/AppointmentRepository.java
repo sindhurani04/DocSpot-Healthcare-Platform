@@ -24,6 +24,8 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Long> 
             Long doctorId,
             LocalDate appointmentDate
     );
+    
 
     List<Appointment> findByStatus(AppointmentStatus status);
+    
 }
