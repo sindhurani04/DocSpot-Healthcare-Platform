@@ -1,3 +1,4 @@
-const API_BASE_URL = "http://localhost:8080/api";
+const API_BASE_URL =
+  "https://docspot-healthcare-platform-production.up.railway.app/api";
 
 export default API_BASE_URL;
