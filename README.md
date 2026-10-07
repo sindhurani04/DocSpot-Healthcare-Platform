@@ -76,7 +76,6 @@ DocSpot-Healthcare-Platform
 
 DocSpot uses a three-tier full-stack architecture connecting the user interface, backend services, and database.
 
-````text
                     👥 USERS
              Patient • Doctor • Admin
                          │
@@ -213,7 +212,7 @@ The appointment workflow allows patients to request appointments based on doctor
 
 ## 📁 Project Structure
 
-```text
+````text
 DocSpot/
 │
 ├── Backend/
@@ -268,31 +267,31 @@ DocSpot uses **MySQL** as the relational database for storing and managing appli
    └──────────────► 📋 Appointments
                          │
                          └── 🔔 Notifications
-```
-
+````
 
 ## 🔐 Authentication & Security
 
 DocSpot implements secure authentication and role-based access control to protect user accounts and application features.
 
 ### 🔑 Authentication
+
 - User registration and login
 - Secure password encryption
 - Session-based user authentication
 - Logout functionality
 
 ### 👥 Role-Based Access
+
 - **Patient** — Book and manage appointments
 - **Doctor** — Manage profile, availability, and appointments
 - **Admin** — Manage users, doctors, and appointments
 
 ### 🛡️ Security
+
 - Spring Security for backend security
 - Protected API endpoints
 - Role-based authorization
 - CORS configuration for secure frontend-backend communication
-
-
 
 ## 🔗 Backend API
 
@@ -300,10 +299,10 @@ The DocSpot backend provides RESTful APIs for authentication, user management, d
 
 ### 🔑 Authentication APIs
 
-| Method | Endpoint | Description |
-|---|---|---|
+| Method | Endpoint             | Description         |
+| ------ | -------------------- | ------------------- |
 | `POST` | `/api/auth/register` | Register a new user |
-| `POST` | `/api/auth/login` | Authenticate user |
+| `POST` | `/api/auth/login`    | Authenticate user   |
 
 ### 👨‍⚕️ Doctor APIs
 
@@ -424,7 +423,6 @@ http://localhost:5173
 
 🎉 **DocSpot is now running locally!**
 
-
 ## 🚀 Deployment
 
 DocSpot uses the following production architecture:
@@ -544,9 +542,6 @@ The application was tested across the major user workflows.
 
 ![Admin Dashboard](screenshots/admin-dashboard.png)
 
-
-
-
 ## 🌟 Project Highlights
 
 - Full-stack healthcare appointment management platform
@@ -600,4 +595,3 @@ This project was developed as a full-stack software project for learning, portfo
 ## ⭐ Support
 
 If you find this project useful or interesting, consider giving the repository a ⭐ on GitHub.
-````
